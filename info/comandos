@@ -1,0 +1,9 @@
+secret_client:
+
+$env:TF_VAR_client_secret="XXX"
+
+
+plan:
+
+terraform plan -out="plan.tfplan"
+terraform show -no-color plan.tfplan > tfplan.txt

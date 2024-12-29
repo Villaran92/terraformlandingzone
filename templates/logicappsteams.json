@@ -1,0 +1,229 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_thklogicappsalerts_name": {
+            "type": "String"
+        },
+        "connections_teams_externalid": {
+            "type": "String"
+        },
+        "location": {
+            "type": "String"
+        },
+        "connections_teams_name": {
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_thklogicappsalerts_name')]",
+            "location": "[parameters('location')]",
+            "tags": {
+                "Recurso": "Logic Apps"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "manual": {
+                            "type": "Request",
+                            "kind": "Http",
+                            "inputs": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "alertContext": {
+                                                    "properties": {
+                                                        "condition": {
+                                                            "properties": {
+                                                                "allOf": {
+                                                                    "items": {
+                                                                        "properties": {
+                                                                            "dimensions": {
+                                                                                "items": {
+                                                                                    "properties": {
+                                                                                        "name": {
+                                                                                            "type": "string"
+                                                                                        },
+                                                                                        "value": {
+                                                                                            "type": "string"
+                                                                                        }
+                                                                                    },
+                                                                                    "required": [
+                                                                                        "name",
+                                                                                        "value"
+                                                                                    ],
+                                                                                    "type": "object"
+                                                                                },
+                                                                                "type": "array"
+                                                                            },
+                                                                            "metricName": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "metricNamespace": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "metricValue": {
+                                                                                "type": "number"
+                                                                            },
+                                                                            "operator": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "threshold": {
+                                                                                "type": "string"
+                                                                            },
+                                                                            "timeAggregation": {
+                                                                                "type": "string"
+                                                                            }
+                                                                        },
+                                                                        "required": [
+                                                                            "metricName",
+                                                                            "metricNamespace",
+                                                                            "operator",
+                                                                            "threshold",
+                                                                            "timeAggregation",
+                                                                            "dimensions",
+                                                                            "metricValue"
+                                                                        ],
+                                                                        "type": "object"
+                                                                    },
+                                                                    "type": "array"
+                                                                },
+                                                                "windowSize": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "conditionType": {
+                                                            "type": "string"
+                                                        },
+                                                        "properties": {}
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "customProperties": {
+                                                    "properties": {
+                                                        "Key1": {
+                                                            "type": "string"
+                                                        },
+                                                        "Key2": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "essentials": {
+                                                    "properties": {
+                                                        "alertContextVersion": {
+                                                            "type": "string"
+                                                        },
+                                                        "alertId": {
+                                                            "type": "string"
+                                                        },
+                                                        "alertRule": {
+                                                            "type": "string"
+                                                        },
+                                                        "alertTargetIDs": {
+                                                            "items": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": "array"
+                                                        },
+                                                        "configurationItems": {
+                                                            "items": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": "array"
+                                                        },
+                                                        "description": {
+                                                            "type": "string"
+                                                        },
+                                                        "essentialsVersion": {
+                                                            "type": "string"
+                                                        },
+                                                        "firedDateTime": {
+                                                            "type": "string"
+                                                        },
+                                                        "monitorCondition": {
+                                                            "type": "string"
+                                                        },
+                                                        "monitoringService": {
+                                                            "type": "string"
+                                                        },
+                                                        "originAlertId": {
+                                                            "type": "string"
+                                                        },
+                                                        "resolvedDateTime": {
+                                                            "type": "string"
+                                                        },
+                                                        "severity": {
+                                                            "type": "string"
+                                                        },
+                                                        "signalType": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "schemaId": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Post_message_in_a_chat_or_channel": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['teams']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "body": {
+                                    "recipient": "19:e0baff846d42433fb0535f9d54a09f68@thread.v2",
+                                    "messageBody": "<p><span style=\"font-size: 14px; background-color: rgb(170, 44, 21)\"><strong>&nbsp;&nbsp;&nbsp;ALERTA CLIENTE  &nbsp;</strong></span><span style=\"font-size: 14px\"><strong><br>\n</strong></span><br>\n<strong>Alerta: </strong><em></em><em>@{triggerBody()?['data']?['essentials']?['alertRule']}</em><em></em><br>\n<strong>Estado: </strong><em><strong></strong></em><em>@{triggerBody()?['data']?['essentials']?['monitorCondition']}</em><em></em><br>\n<strong>Recurso: </strong><em></em><em>@{toUpper(last(split(triggerBody()?['data']?['essentials']?['alertTargetIDs'][0],'/')))}</em><em><br>\n</em>\n<strong>Fecha: </strong><em><strong></strong></em><em>@{formatDateTime(convertTimeZone(utcNow(), 'UTC', 'Romance Standard Time'),'dd-MM-yyyy HH:mm:ss')}</em><em></em></p>"
+                                },
+                                "path": "/beta/teams/conversation/message/poster/Flow bot/location/@{encodeURIComponent('Group chat')}"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "teams": {
+                                "id": "[concat(subscription().id,'/providers/Microsoft.Web/locations/',parameters('location'),'/managedApis/', parameters('connections_teams_name'))]",
+                                "connectionId": "[parameters('connections_teams_externalid')]",
+                                "connectionName": "[parameters('connections_teams_name')]"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
